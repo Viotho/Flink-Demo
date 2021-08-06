@@ -5,6 +5,7 @@ import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
@@ -60,10 +61,12 @@ public class IncreaseAlertFunction extends KeyedProcessFunction<String, StockPri
         currentTimer.clear();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         DataStream<StockPrice> source = env.addSource(new StockSource("/path/to/file"));
-        source.keyBy(StockPrice::getSymbol)
+        SingleOutputStreamOperator<String> resultStream = source.keyBy(StockPrice::getSymbol)
                 .process(new IncreaseAlertFunction(3000));
+        resultStream.print();
+        env.execute("Increase Alert KeyedProcessFunction Demo");
     }
 }

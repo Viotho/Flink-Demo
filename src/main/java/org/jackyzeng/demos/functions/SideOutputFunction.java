@@ -22,7 +22,7 @@ public class SideOutputFunction extends KeyedProcessFunction<String, StockPrice,
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         DataStream<StockPrice> input = env.addSource(new StockSource("/path/to/file"));
         SingleOutputStreamOperator<String> mainStream = input
@@ -30,6 +30,9 @@ public class SideOutputFunction extends KeyedProcessFunction<String, StockPrice,
                 .process(new SideOutputFunction());
 
         DataStream<StockPrice> sideOutputStream = mainStream.getSideOutput(highVolumeOutput);
+        mainStream.print();
+        sideOutputStream.print();
+        env.execute("SideOutput Demo");
     }
 
 }
