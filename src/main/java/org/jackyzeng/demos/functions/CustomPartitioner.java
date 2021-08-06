@@ -1,10 +1,9 @@
 package org.jackyzeng.demos.functions;
 
 import org.apache.flink.api.common.functions.Partitioner;
-import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.jackyzeng.demos.sources.StockSource;
-import org.jackyzeng.demos.utils.StockPrice;
 
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -27,9 +26,11 @@ public class CustomPartitioner implements Partitioner<String> {
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStream<StockPrice> stockStream = env.addSource(new StockSource("/path/to/file"));
-        stockStream.partitionCustom(new CustomPartitioner(), StockPrice::getSymbol);
-        stockStream.print();
-        env.execute("Custom Partition");
+        DataStreamSource<Tuple2<Integer, String>> inputStream = env.fromElements(Tuple2.of(1, "123"), Tuple2.of(2, "abc"),
+                Tuple2.of(3, "256"), Tuple2.of(4, "zyx"),
+                Tuple2.of(5, "bcd"), Tuple2.of(6, "666"));
+        inputStream.partitionCustom(new CustomPartitioner(), tuple2 -> tuple2.f1);
+        inputStream.print();
+        env.execute("Custom Partition Demo");
     }
 }

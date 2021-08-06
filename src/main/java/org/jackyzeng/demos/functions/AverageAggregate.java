@@ -1,17 +1,15 @@
 package org.jackyzeng.demos.functions;
 
-import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.jackyzeng.demos.sources.StockSource;
 import org.jackyzeng.demos.utils.StockPrice;
-
-import java.time.Duration;
 
 public class AverageAggregate implements AggregateFunction<StockPrice, Tuple3<String, Double, Integer>, Tuple2<String, Double>> {
     @Override
@@ -36,13 +34,13 @@ public class AverageAggregate implements AggregateFunction<StockPrice, Tuple3<St
         return Tuple3.of(acc1.f0, acc1.f1 + acc2.f1, acc1.f2 + acc2.f2);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStream<StockPrice> stockStream = env.addSource(new StockSource("/path/to/file"));
-        stockStream.assignTimestampsAndWatermarks(WatermarkStrategy.<StockPrice>forBoundedOutOfOrderness(Duration.ofSeconds(5))
-                .withTimestampAssigner((event, timestamp) -> event.getTimestamp()))
-                .keyBy(StockPrice::getSymbol)
-                .window(TumblingEventTimeWindows.of(Time.seconds(10)))
+        DataStream<StockPrice> stockStream = env.addSource(new StockSource("stock/stock-tick-20200108.csv"));
+        SingleOutputStreamOperator<Tuple2<String, Double>> average = stockStream.keyBy(StockPrice::getSymbol)
+                .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
                 .aggregate(new AverageAggregate());
+        average.print();
+        env.execute("Aggregate Function Demo");
     }
 }

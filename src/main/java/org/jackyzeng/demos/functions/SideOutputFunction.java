@@ -1,5 +1,6 @@
 package org.jackyzeng.demos.functions;
 
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -24,15 +25,16 @@ public class SideOutputFunction extends KeyedProcessFunction<String, StockPrice,
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStream<StockPrice> input = env.addSource(new StockSource("/path/to/file"));
-        SingleOutputStreamOperator<String> mainStream = input
+        DataStream<StockPrice> inputStream = env.addSource(new StockSource("stock/stock-tick-20200108.csv"))
+                .assignTimestampsAndWatermarks(WatermarkStrategy.<StockPrice>forMonotonousTimestamps()
+                        .withTimestampAssigner((event, timestamp) -> event.getTimestamp()));
+
+        SingleOutputStreamOperator<String> mainStream = inputStream
                 .keyBy(StockPrice::getSymbol)
                 .process(new SideOutputFunction());
 
         DataStream<StockPrice> sideOutputStream = mainStream.getSideOutput(highVolumeOutput);
-        mainStream.print();
         sideOutputStream.print();
         env.execute("SideOutput Demo");
     }
-
 }

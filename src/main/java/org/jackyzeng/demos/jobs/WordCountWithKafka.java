@@ -48,6 +48,6 @@ public class WordCountWithKafka {
 				.sum(1);
 
 		wordCount.print();
-		env.execute("Kafka Streaming Word Count.");
+		env.execute("Kafka Streaming Word Count");
 	}
 }

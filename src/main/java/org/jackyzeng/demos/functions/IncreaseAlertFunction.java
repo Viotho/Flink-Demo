@@ -1,5 +1,6 @@
 package org.jackyzeng.demos.functions;
 
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.api.common.typeinfo.Types;
@@ -57,16 +58,21 @@ public class IncreaseAlertFunction extends KeyedProcessFunction<String, StockPri
     @Override
     public void onTimer(long timestamp, KeyedProcessFunction<String, StockPrice, String>.OnTimerContext ctx, Collector<String> out) throws Exception {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        out.collect(formatter.format(timestamp));
+        out.collect(formatter.format(timestamp) + ", symbol: " + ctx.getCurrentKey() +
+                " monotonically increased for " + intervalMills + " millisecond.");
+        // 清空currentTimer状态
         currentTimer.clear();
     }
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStream<StockPrice> source = env.addSource(new StockSource("/path/to/file"));
-        SingleOutputStreamOperator<String> resultStream = source.keyBy(StockPrice::getSymbol)
+        DataStream<StockPrice> inputStream = env.addSource(new StockSource("stock/stock-tick-20200108.csv"))
+                .assignTimestampsAndWatermarks(WatermarkStrategy.<StockPrice>forMonotonousTimestamps()
+                        .withTimestampAssigner((event, timestamp) -> event.getTimestamp()));
+
+        SingleOutputStreamOperator<String> resultStream = inputStream.keyBy(StockPrice::getSymbol)
                 .process(new IncreaseAlertFunction(3000));
         resultStream.print();
-        env.execute("Increase Alert KeyedProcessFunction Demo");
+        env.execute("KeyedProcessFunction Increase Alert Demo");
     }
 }
