@@ -1,4 +1,4 @@
-package org.jackyzeng.demos.triggers;
+package org.jackyzeng.demos.functions.triggers;
 
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
@@ -51,12 +51,15 @@ public class CustomTrigger extends Trigger<StockPrice, TimeWindow> {
         lastPriceState.clear();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         DataStream<StockPrice> stockStream = env.addSource(new StockSource("stock/stock-tick-20200108.csv"));
         SingleOutputStreamOperator<Tuple2<String, Double>> average = stockStream.keyBy(StockPrice::getSymbol)
                 .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
                 .trigger(new CustomTrigger())
                 .aggregate(new AverageAggregate());
+
+        average.print();
+        env.execute("Trigger Demo");
     }
 }
