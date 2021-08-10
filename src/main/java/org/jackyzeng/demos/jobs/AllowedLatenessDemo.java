@@ -49,6 +49,7 @@ public class AllowedLatenessDemo {
                                 .withTimestampAssigner((element, timestamp) -> element.f1))
                 .keyBy(element -> element.f0)
                 .window(TumblingEventTimeWindows.of(Time.seconds(5)))
+                .allowedLateness(Time.seconds(5))
                 .process(new AllowedLatenessFunction());
 
         allowedLatenessStream.print();
