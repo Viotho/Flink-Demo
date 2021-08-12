@@ -17,7 +17,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 import org.jackyzeng.demos.utils.UserBehaviour;
 
-public class MapStateFunction extends RichFlatMapFunction<UserBehaviour, Tuple3<Long, String, Integer>> {
+public class MapStateDemo extends RichFlatMapFunction<UserBehaviour, Tuple3<Long, String, Integer>> {
 
     private MapState<String, Integer> behaviourMapState;
 
@@ -41,7 +41,7 @@ public class MapStateFunction extends RichFlatMapFunction<UserBehaviour, Tuple3<
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         DataStreamSource<UserBehaviour> userBehaviourStream = env.fromElements(new UserBehaviour(), new UserBehaviour(), new UserBehaviour());
         KeyedStream<UserBehaviour, Long> keyedStream = userBehaviourStream.keyBy(user -> user.getUserId());
-        SingleOutputStreamOperator<Tuple3<Long, String, Integer>> behaviourCountStream = keyedStream.flatMap(new MapStateFunction());
+        SingleOutputStreamOperator<Tuple3<Long, String, Integer>> behaviourCountStream = keyedStream.flatMap(new MapStateDemo());
         behaviourCountStream.print();
         env.execute("Rich Map Function State Demo");
     }
