@@ -1,5 +1,6 @@
 package org.jackyzeng.demos.connectors;
 
+import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
@@ -8,6 +9,7 @@ import org.apache.flink.core.fs.Path;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.FileProcessingMode;
+import org.jackyzeng.demos.utils.StockPrice;
 
 import java.util.Arrays;
 
@@ -19,6 +21,13 @@ public class StandardIODemo {
 
     public static void main(String[] args) {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // Check a class whether it is POJO type.
+        // If using KryoSerializer, then it is not POJO type.
+        System.out.println(TypeInformation.of(StockPrice.class).createSerializer(new ExecutionConfig()));
+
+        // Disable Kryo type.
+        env.getConfig().disableGenericTypes();
 
         // Socket Text Stream.
         DataStreamSource<String> socketTextStream = env.socketTextStream(hostName, port, "\n");
