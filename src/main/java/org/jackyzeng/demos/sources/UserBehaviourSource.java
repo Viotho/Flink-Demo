@@ -7,13 +7,13 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class UserBehaviorSource implements SourceFunction<UserBehaviour> {
+public class UserBehaviourSource implements SourceFunction<UserBehaviour> {
 
     private boolean isRunning = true;
     private final String path;
     private InputStream streamSource;
 
-    public UserBehaviorSource(String path) {
+    public UserBehaviourSource(String path) {
         this.path = path;
     }
 

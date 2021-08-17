@@ -13,6 +13,7 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.co.KeyedBroadcastProcessFunction;
 import org.apache.flink.util.Collector;
+import org.jackyzeng.demos.sources.UserBehaviourSource;
 import org.jackyzeng.demos.utils.BehaviourPattern;
 import org.jackyzeng.demos.utils.UserBehaviour;
 
@@ -50,7 +51,7 @@ public class BroadcastStateDemo {
 
         public static void main(String[] args) throws Exception {
             StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-            DataStreamSource<UserBehaviour> userBehaviourStream = env.fromElements(new UserBehaviour());
+            DataStreamSource<UserBehaviour> userBehaviourStream = env.addSource(new UserBehaviourSource("taobao/UserBehavior.json"));
             DataStreamSource<BehaviourPattern> behaviourPatternStream = env.fromElements(new BehaviourPattern());
             MapStateDescriptor<Void, BehaviourPattern> descriptor = new MapStateDescriptor<>(
                     "behaviour-pattern",
