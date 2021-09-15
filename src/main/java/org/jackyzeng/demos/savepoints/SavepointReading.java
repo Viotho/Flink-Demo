@@ -14,9 +14,9 @@ public class SavepointReading {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         StateBackend stateBackend = new HashMapStateBackend();
         ExistingSavepoint savepoint = Savepoint.load(env, "hdfs://path/", stateBackend);
-        DataSet<Integer> listState = savepoint.readListState("source-id", "state-name", Types.INT);
-        DataSet<Integer> unionState = savepoint.readUnionState("union-source-id", "union-state-name", Types.INT);
-        DataSource<KeyedStateReader.KeyedState> keyedState = savepoint.readKeyedState("mapper-id", new KeyedStateReader());
+        DataSet<Integer> listState = savepoint.readListState("operator-id", "state-name", Types.INT);
+        DataSet<Integer> unionState = savepoint.readUnionState("the-operator-id", "union-state-name", Types.INT);
+        DataSource<KeyedStateReader.KeyedState> keyedState = savepoint.readKeyedState("keyed-operator-id", new KeyedStateReader());
         env.execute("Savepoint Reading");
     }
 }
