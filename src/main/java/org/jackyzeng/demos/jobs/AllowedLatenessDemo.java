@@ -29,7 +29,7 @@ public class AllowedLatenessDemo {
             }
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            if (isUpdated.value() == null || isUpdated.value() == false) {
+            if (isUpdated.value() == null || !isUpdated.value()) {
                 collector.collect(Tuple4.of(key, format.format(Calendar.getInstance().getTime()), count, "first"));
                 isUpdated.update(true);
             } else {
