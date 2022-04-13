@@ -70,9 +70,55 @@ public class TableApiStructure {
                                 .withTimestampAssigner((event, timestamp) -> event.f3.getTime())
                 );
 
-        Table inputTable = tEnv.fromDataStream(stream).as("id", "long", "str", "ts.rowtime");
+        Table inputTable = tEnv.fromDataStream(stream).as("id", "long_id", "name", "ts.rowtime");
+//        inputTable.filter($("")).groupBy($("")).select($("").sum().as("sum"));
         tEnv.createTemporaryView("input_table", inputTable);
         Table resultTable = tEnv.sqlQuery("SELECT id, s FROM input_table, LATERAL TABLE(Func(str)) AS T(s)");
+
+//        // Table Api Using Window with ROWS in SQL Demo
+//        tEnv.sqlQuery("SELECT \n" +
+//                "    field1,\n" +
+//                "    AGG_FUNCTION(field2) OVER (\n" +
+//                "     [PARTITION BY (value_expression1,..., value_expressionN)] \n" +
+//                "     ORDER BY timeAttr\n" +
+//                "     ROWS \n" +
+//                "     BETWEEN (UNBOUNDED | rowCount) PRECEDING AND CURRENT ROW) AS fieldName\n" +
+//                "FROM tab1\n" +
+//                "\n" +
+//                "-- 使用AS\n" +
+//                "SELECT \n" +
+//                "    field1,\n" +
+//                "    AGG_FUNCTION(field2) OVER w AS fieldName\n" +
+//                "FROM tab1\n" +
+//                "WINDOW w AS (\n" +
+//                "     [PARTITION BY (value_expression1,..., value_expressionN)] \n" +
+//                "     ORDER BY timeAttr\n" +
+//                "     ROWS \n" +
+//                "     BETWEEN (UNBOUNDED | rowCount) PRECEDING AND CURRENT ROW\n" +
+//                ")");
+
+//        // Table Api Using Window with RANGE in SQL Demo
+//        tEnv.sqlQuery("SELECT \n" +
+//                "    field1,\n" +
+//                "    AGG_FUNCTION(field2) OVER (\n" +
+//                "     [PARTITION BY (value_expression1,..., value_expressionN)] \n" +
+//                "     ORDER BY timeAttr\n" +
+//                "     RANGE\n" +
+//                "     BETWEEN (UNBOUNDED | timeInterval) PRECEDING AND CURRENT ROW) AS fieldName\n" +
+//                "FROM tab1\n" +
+//                "\n" +
+//                "-- 使用AS\n" +
+//                "SELECT \n" +
+//                "    field1,\n" +
+//                "    AGG_FUNCTION(field2) OVER w AS fieldName\n" +
+//                "FROM tab1\n" +
+//                "WINDOW w AS (\n" +
+//                "     [PARTITION BY (value_expression1,..., value_expressionN)] \n" +
+//                "     ORDER BY timeAttr\n" +
+//                "     RANGE\n" +
+//                "     BETWEEN (UNBOUNDED | timeInterval) PRECEDING AND CURRENT ROW\n" +
+//                ") ");
+
         DataStream<Row> resultStream = tEnv.toDataStream(resultTable);
 //        DataStream<Row> appendStream = tEnv.toAppendStream(resultTable, Row.class);
 //        DataStream<Tuple2<Boolean, Row>> retractStream = tEnv.toRetractStream(inputTable, Row.class);
