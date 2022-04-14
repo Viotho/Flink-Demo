@@ -5,7 +5,7 @@ import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.state.api.functions.KeyedStateBootstrapFunction;
-import org.jackyzeng.demos.utils.Account;
+import org.jackyzeng.demos.entities.Account;
 
 public class AccountKeyedStateBootstrapFunction extends KeyedStateBootstrapFunction<Integer, Account> {
 

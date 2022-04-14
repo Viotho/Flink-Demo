@@ -1,7 +1,7 @@
 package org.jackyzeng.demos.sources;
 
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
-import org.jackyzeng.demos.utils.StockPrice;
+import org.jackyzeng.demos.entities.StockPrice;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;

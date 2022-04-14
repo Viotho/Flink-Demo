@@ -13,7 +13,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import org.jackyzeng.demos.sources.StockSource;
-import org.jackyzeng.demos.utils.StockPrice;
+import org.jackyzeng.demos.entities.StockPrice;
 
 public class IncrementalWithProcessWindow {
     public static class MaxMinReduce implements ReduceFunction<Tuple4<String, Double, Double, Long>> {

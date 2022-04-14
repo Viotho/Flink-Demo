@@ -8,7 +8,7 @@ import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
 import org.apache.flink.util.OutputTag;
 import org.jackyzeng.demos.sources.StockSource;
-import org.jackyzeng.demos.utils.StockPrice;
+import org.jackyzeng.demos.entities.StockPrice;
 
 public class SideOutputFunction extends KeyedProcessFunction<String, StockPrice, String> {
 

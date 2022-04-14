@@ -1,7 +1,7 @@
 package org.jackyzeng.demos.sources;
 
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
-import org.jackyzeng.demos.utils.UserBehaviour;
+import org.jackyzeng.demos.entities.UserBehaviour;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

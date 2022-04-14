@@ -14,8 +14,8 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.co.KeyedBroadcastProcessFunction;
 import org.apache.flink.util.Collector;
 import org.jackyzeng.demos.sources.UserBehaviourSource;
-import org.jackyzeng.demos.utils.BehaviourPattern;
-import org.jackyzeng.demos.utils.UserBehaviour;
+import org.jackyzeng.demos.entities.BehaviourPattern;
+import org.jackyzeng.demos.entities.UserBehaviour;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package org.jackyzeng.demos.utils;
+package org.jackyzeng.demos.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

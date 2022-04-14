@@ -6,7 +6,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.jackyzeng.demos.sources.StockSource;
-import org.jackyzeng.demos.utils.StockPrice;
+import org.jackyzeng.demos.entities.StockPrice;
 
 public class WindowReduceDemo {
     public static void main(String[] args) throws Exception {

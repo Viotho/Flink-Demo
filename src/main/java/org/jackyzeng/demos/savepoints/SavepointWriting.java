@@ -7,7 +7,7 @@ import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
 import org.apache.flink.state.api.BootstrapTransformation;
 import org.apache.flink.state.api.OperatorTransformation;
 import org.apache.flink.state.api.Savepoint;
-import org.jackyzeng.demos.utils.Account;
+import org.jackyzeng.demos.entities.Account;
 
 import java.util.ArrayList;
 

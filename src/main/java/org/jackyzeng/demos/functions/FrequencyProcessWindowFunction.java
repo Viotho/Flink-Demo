@@ -4,7 +4,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
-import org.jackyzeng.demos.utils.StockPrice;
+import org.jackyzeng.demos.entities.StockPrice;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

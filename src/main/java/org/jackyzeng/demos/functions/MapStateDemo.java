@@ -15,7 +15,7 @@ import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
-import org.jackyzeng.demos.utils.UserBehaviour;
+import org.jackyzeng.demos.entities.UserBehaviour;
 
 public class MapStateDemo extends RichFlatMapFunction<UserBehaviour, Tuple3<Long, String, Integer>> {
 

@@ -1,7 +1,7 @@
 package org.jackyzeng.demos.sources;
 
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
-import org.jackyzeng.demos.utils.Media;
+import org.jackyzeng.demos.entities.Media;
 
 import java.util.Arrays;
 import java.util.List;

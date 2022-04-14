@@ -14,7 +14,7 @@ import org.apache.flink.streaming.api.windowing.triggers.TriggerResult;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.jackyzeng.demos.functions.AverageAggregate;
 import org.jackyzeng.demos.sources.StockSource;
-import org.jackyzeng.demos.utils.StockPrice;
+import org.jackyzeng.demos.entities.StockPrice;
 
 import java.util.Objects;
 

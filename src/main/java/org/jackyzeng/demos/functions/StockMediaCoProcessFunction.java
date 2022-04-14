@@ -12,8 +12,8 @@ import org.apache.flink.streaming.api.functions.co.KeyedCoProcessFunction;
 import org.apache.flink.util.Collector;
 import org.jackyzeng.demos.sources.MediaSource;
 import org.jackyzeng.demos.sources.StockSource;
-import org.jackyzeng.demos.utils.Media;
-import org.jackyzeng.demos.utils.StockPrice;
+import org.jackyzeng.demos.entities.Media;
+import org.jackyzeng.demos.entities.StockPrice;
 
 import java.util.Objects;
 
