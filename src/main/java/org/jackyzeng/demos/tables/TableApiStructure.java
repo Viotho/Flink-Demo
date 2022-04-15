@@ -72,6 +72,7 @@ public class TableApiStructure {
 
         Table inputTable = tEnv.fromDataStream(stream).as("id", "long_id", "name", "ts.rowtime");
 //        inputTable.filter($("")).groupBy($("")).select($("").sum().as("sum"));
+//        inputTable.window(Tumble.over(lit(10).minutes()).on($("column")).as("window_time"));
         tEnv.createTemporaryView("input_table", inputTable);
         Table resultTable = tEnv.sqlQuery("SELECT id, s FROM input_table, LATERAL TABLE(Func(str)) AS T(s)");
 
